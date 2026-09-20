@@ -1,0 +1,41 @@
+// Talks to the backend's Companion AI route (see README: "Companion AI /LLM").
+// This is intentionally a thin client — persona rules, memory retrieval, and
+// prompt construction live server-side so the persona can't be tampered with
+// from the browser.
+//
+// Swap the mock below for a real call once the backend route exists, e.g.:
+//
+//   export async function sendMessageToCompanion(message, { mood, history }) {
+//     const res = await fetch("/api/companion/chat", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ message, mood, history }),
+//     });
+//     if (!res.ok) throw new Error("Companion is unreachable");
+//     return res.json(); // { reply: string }
+//   }
+
+const MOCK_REPLIES = {
+  supportive: [
+    "That's fair. What's the smallest version of the next step?",
+    "Noted in the record. Want me to fold this into today's plan?",
+    "You're allowed to say that plainly — I'm not grading it.",
+  ],
+  stern: [
+    "That's the third time this has come up. What actually changes today?",
+    "I'll write it down as said. Let's see if it matches Friday's record.",
+    "Fair enough. What's the one thing you're not going to skip?",
+  ],
+  celebratory: [
+    "Put that in the record — it's earned.",
+    "That's chapter-closing material. Nicely done.",
+    "Look at where chapter one started. This is the payoff.",
+  ],
+};
+
+export async function sendMessageToCompanion(message, { mood = "supportive" } = {}) {
+  await new Promise((r) => setTimeout(r, 500 + Math.random() * 500));
+  const pool = MOCK_REPLIES[mood] || MOCK_REPLIES.supportive;
+  const reply = pool[Math.floor(Math.random() * pool.length)];
+  return { reply };
+}

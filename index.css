@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background: theme("colors.moon");
+    color: theme("colors.ink");
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.moon");
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .brush-underline {
+    background-image: linear-gradient(
+      to right,
+      theme("colors.moon") 0%,
+      theme("colors.moon") 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    background-position: 0 100%;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: theme("colors.ink-line");
+    border-radius: 999px;
+  }
+}
